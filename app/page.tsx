@@ -10,6 +10,7 @@ interface Balance {
 const fetchPersonalBalance = async (): Promise<Balance> => {
   try {
     const response = await fetch("https://api.monobank.ua/personal/client-info", {
+      next: { revalidate: 10 },
       headers: {
         'X-Token': process.env.MONOBANK_API_KEY
       }
@@ -27,6 +28,8 @@ const fetchPersonalBalance = async (): Promise<Balance> => {
 
 export default async function Home() {
   const data = await fetchPersonalBalance();
+
+  if (!data) return null;
 
   const platinumCard = data.accounts.find(account => account.type === "platinum");
 
