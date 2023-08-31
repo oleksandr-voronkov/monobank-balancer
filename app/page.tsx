@@ -29,7 +29,7 @@ const fetchPersonalBalance = async (): Promise<Balance> => {
 export default async function Home() {
   const data = await fetchPersonalBalance();
 
-  if (!data) return null;
+  if (!data || !data.accounts) return null;
 
   const platinumCard = data.accounts.find(account => account.type === "platinum");
 
